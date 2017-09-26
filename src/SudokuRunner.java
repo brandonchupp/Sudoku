@@ -1,11 +1,18 @@
 import javax.swing.JFrame;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
-
+/**
+ * Class which allows user to play the game using the Sudoku class
+ * @author Brandon Chupp
+ */
 public class SudokuRunner {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Sudoku mySudoku = new Sudoku(true);
+	public static void main(String[] args){
+		// Constructs a new Sudoku board with default board layout
+		Sudoku mySudoku = new Sudoku(true);			
 		
 		// Creates a new JFrame
 		JFrame frame = new JFrame();
@@ -15,170 +22,160 @@ public class SudokuRunner {
 		frame.add(mySudoku);
 		frame.setVisible(true);
 		
-		//Values for testing
-		mySudoku.insertVal(1, 3, 4);
-		mySudoku.insertVal(1, 4, 6);
-		mySudoku.insertVal(1, 6, 8);
-		mySudoku.insertVal(1, 7, 9);
-		mySudoku.insertVal(1, 8, 1);
-		mySudoku.insertVal(1, 9, 2);
-		
-		mySudoku.insertVal(2, 2, 7);
-		mySudoku.insertVal(2, 3, 2);
-		mySudoku.insertVal(2, 7, 3);
-		mySudoku.insertVal(2, 8, 4);
-		mySudoku.insertVal(2, 9, 8);
-		
-		mySudoku.insertVal(3, 1, 1);
-		mySudoku.insertVal(3, 4, 3);
-		mySudoku.insertVal(3, 5, 4);
-		mySudoku.insertVal(3, 6, 2);
-		mySudoku.insertVal(3, 7, 5);
-		mySudoku.insertVal(3, 9, 7);
-		
-		mySudoku.insertVal(4, 2, 5);
-		mySudoku.insertVal(4, 3, 9);
-		mySudoku.insertVal(4, 4, 7);
-		mySudoku.insertVal(4, 6, 1);
-		mySudoku.insertVal(4, 7, 4);
-		mySudoku.insertVal(4, 8, 2);
-		
-		mySudoku.insertVal(5, 2, 2);
-		mySudoku.insertVal(5, 3, 6);
-		mySudoku.insertVal(5, 5, 5);
-		mySudoku.insertVal(5, 7, 7);
-		mySudoku.insertVal(5, 8, 9);
-		
-		mySudoku.insertVal(6, 2, 1);
-		mySudoku.insertVal(6, 3, 3);
-		mySudoku.insertVal(6, 4, 9);
-		mySudoku.insertVal(6, 6, 4);
-		mySudoku.insertVal(6, 7, 8);
-		mySudoku.insertVal(6, 8, 5);
-		
-		mySudoku.insertVal(7, 1, 9);
-		mySudoku.insertVal(7, 3, 1);
-		mySudoku.insertVal(7, 4, 5);
-		mySudoku.insertVal(7, 5, 3);
-		mySudoku.insertVal(7, 6, 7);
-		mySudoku.insertVal(7, 9, 4);
-		
-		mySudoku.insertVal(8, 1, 2);
-		mySudoku.insertVal(8, 2, 8);
-		mySudoku.insertVal(8, 3, 7);
-		mySudoku.insertVal(8, 7, 6);
-		mySudoku.insertVal(8, 8, 3);
-		
-		mySudoku.insertVal(9, 1, 3);
-		mySudoku.insertVal(9, 2, 4);
-		mySudoku.insertVal(9, 3, 5);
-		mySudoku.insertVal(9, 4, 2);
-		mySudoku.insertVal(9, 6, 6);
-
-		
-
-		
-		
+		// Scanner allows interaction with user
 		Scanner userInput = new Scanner(System.in);
 		System.out.println("Welcome to the game of Sudoku!");
 		System.out.print("\nHere is your gameboard:\n\n");
-		
 		mySudoku.printMySudoku();
 		
-		boolean row = false;
-		boolean column = false;
 		boolean value = false;
-		boolean remove = false;
+		boolean remove = false; // Used to store the remove user decision
 		int rowValue = 0;
 		int columnValue = 0;
 		int valueValue = 0;
+		int in = 0;
 		
 		//Main body of program that accepts user input
 		while (true)
 		{
-			System.out.println("\nPlease enter the row you would like -\n(Integer from 0 to 9): ");
-			while (row == false) {
-				if (userInput.hasNextInt()) 
+			//Do-while loops allow for incorrect user input
+			do
+			{
+				System.out.println("\n------Main Menu------");
+				System.out.println("\nType 1 to insert a value.");
+				System.out.println("Type 2 to import a game file.");
+				System.out.println("Type 3 to save your game file.");
+				while (!userInput.hasNextInt()) 
 				{
-					rowValue = userInput.nextInt();
-					row = true;
-					if (rowValue > 9 || rowValue < 1) row = false;
+		            System.out.println("Invalid Input! Try again: ");
+		            userInput.nextLine();
 				}
-				if (row == false)
+				in = userInput.nextInt();
+				if (in > 3 || in < 1)
 				{
-					System.out.println("\nInvalid input!");
-					System.out.println("Enter the row you would like: ");
-					userInput.next();
-					
-				}
-			}
-			System.out.println("Second, please enter the column you would like: -\n(Integer from 0 to 9): ");
-			while (column == false) {
-				if (userInput.hasNextInt()) 
-				{
-					columnValue = userInput.nextInt();
-					column = true;
-					if (columnValue > 9 || columnValue < 1) column = false;
-				}
-				if (column == false)
-				{
-					System.out.println("\nInvalid input!");
-					System.out.println("Enter the column you would like: ");
-					userInput.next();
-					
+					System.out.println("Invalid Input! Try again: ");
+		            userInput.nextLine();
 				}
 			}
-			System.out.println("Finally, please enter the value you would like.");
-			System.out.println("Note: to remove a value, enter \"remove\" here. \n(Integer from 0 to 9 or \"remove\"): ");
-			while (value == false) {
-				if (userInput.hasNext("remove"))
-				{
-					System.out.println("Okay, please enter the value to be removed: ");
-					userInput.next();
-					remove = true;
+			while (in > 3 || in < 1);
+			
+			// Allows user to insert a value
+			if (in == 1)
+			{
+				do {
+			        System.out.println("Please enter the row you would like: -\n(Integer from 1 to 9): ");
+			        while (!userInput.hasNextInt()) {
+			            System.out.println("Invalid Input! Try again: ");
+			            userInput.next();
+			        }
+			        rowValue = userInput.nextInt();
+			    } while (rowValue > mySudoku.ROWS || rowValue < 1);
+			    
+				do {
+			        System.out.println("Please enter the column you would like: -\n(Integer from 1 to 9): ");
+			        while (!userInput.hasNextInt()) {
+			            System.out.println("Invalid Input! Try again: ");
+			            userInput.next();
+			        }
+			        columnValue = userInput.nextInt();
+			    } while (columnValue > mySudoku.COLUMNS || columnValue < 1);
+
+			    System.out.println("Please enter the value you would to insert.");
+			    System.out.println("Note: to remove a value, enter \"remove\" here. \n(Integer from 1 to 9 or \"remove\"): ");   
+				while (value == false) {
+					if (userInput.hasNext("remove"))
+					{
+						System.out.println("Okay, please enter the value to be removed: ");
+						userInput.next();
+						remove = true;
+					}
+					if (userInput.hasNextInt()) 
+					{
+						valueValue = userInput.nextInt();
+						value = true;
+						if (valueValue > mySudoku.ROWS || valueValue < 1) value = false;
+					}
+					
+					if (value == false)
+					{
+						System.out.println("\nInvalid input!");
+						System.out.println("Enter the value you would like: ");
+						userInput.next();
+						
+					}
 				}
-				if (userInput.hasNextInt()) 
+				//Received input, now implement it
+				if (remove == false)
 				{
-					valueValue = userInput.nextInt();
-					value = true;
-					if (valueValue > 9 || valueValue < 1) value = false;
+					System.out.println(mySudoku.acceptInput(rowValue, columnValue, valueValue));
 				}
+				else
+				{
+					mySudoku.removeVal(rowValue, columnValue, valueValue);
+					remove = false;
+				}
+				mySudoku.printMySudoku();
 				
-				if (value == false)
-				{
-					System.out.println("\nInvalid input!");
-					System.out.println("Enter the value you would like: ");
-					userInput.next();
-					
+				// Refresh JFrame graphics
+				frame.setVisible(false);
+				frame.setVisible(true);
+				
+				value = false;
+			}
+			
+			// Allows user input file
+			if (in == 2)
+			{
+				boolean fileValid = false;
+				boolean fileData = true;
+				while (!fileValid) {
+					File fileNameInput;
+					Scanner fileInput = null;
+					try {
+						System.out.println("Please enter the name of the file: ");
+						String fileName = userInput.next();
+						fileNameInput = new File(fileName);
+						fileInput = new Scanner(fileNameInput);
+						try {
+							String input = fileInput.next();
+							fileData = mySudoku.setBoard(input);
+							fileInput.close();
+							fileValid = true;
+						} 
+						catch (NoSuchElementException e) 
+						{
+							System.out.println("That file does not contain any data. Please check the file and try again.");
+						}
+					} 
+					catch (FileNotFoundException exception) 
+					{
+						System.out.println("File not found. Please try again.");
+					}
+					if (fileData == false) fileValid = false;
 				}
 			}
 			
-			
-			//Got input, now use it
-			
-			
-			if (remove == false)
+			// Allows user to save game
+			if (in == 3)
 			{
-				mySudoku.insertVal(rowValue, columnValue, valueValue);
+				//Read current time to name saved game file
+				String time = new SimpleDateFormat("MM.dd.yy_HH.mm_").format(new Date());
+				try {
+					PrintWriter output = new PrintWriter(time + "savedSudoku.txt");
+					try {
+						output.print(mySudoku.saveBoard(time));
+					}
+					finally
+					{
+						output.close();
+					}
+				}
+				catch (IOException e) {
+					System.out.println("File not saved.");
+					e.printStackTrace();
+				}
 			}
-			else
-			{
-				mySudoku.removeVal(rowValue, columnValue, valueValue);
-			}
-			mySudoku.printMySudoku();
-			frame.setVisible(false);
-			frame.setVisible(true);
 			
-			
-			row = false;
-			column = false;
-			value = false;
-			if (mySudoku.checkWin() == true) 
-			{
-				System.out.println("You win!");
-				userInput.close();
-				break;
-			}
-		}
-	}
+		}//loop	
+	}//main
 }
