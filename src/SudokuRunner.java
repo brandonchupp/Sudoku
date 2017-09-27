@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
 /**
  * Class which allows user to play the game using the Sudoku class
  * @author Brandon Chupp
